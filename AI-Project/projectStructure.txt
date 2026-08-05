@@ -1,0 +1,61 @@
+Final Architecture Flow
+User
+ |
+ v
+server.js
+ |
+ v
+routes/chat.js
+ |
+ v
+agentService.js
+ |
+ +----------------+
+ |                |
+ v                v
+AI Client      Tool Registry
+ |                |
+ v                v
+Qwen3          Tools
+(Ollama)       |
+               |
+               v
+          weather.js
+          calculator.js
+
+ |
+ v
+
+Final AI Response
+
+
+
+
+
+
+
+
+
+while (true)
+
+    ↓
+
+AI call
+
+    ↓
+
+function_call mila?
+
+    ↓
+   Yes -----------------------> Execute tools
+    │                              │
+    │                              ▼
+    │                     Tool outputs AI ko bhejo
+    │                              │
+    └──────────────────────────────┘
+                 (Next iteration)
+
+No
+ │
+ ▼
+return response.output_text

@@ -1,0 +1,9 @@
+Project: AI Tool-Calling Agent (Node.js + Ollama + Qwen3)
+
+Built an autonomous AI agent using the OpenAI Responses API interface with Node.js and Ollama (Qwen3).
+Implemented an iterative agent loop to support multi-step tool calling.
+Created a tool registry for dynamic tool discovery and execution.
+Implemented JSON Schema-based function definitions for tool calling.
+Added support for multiple tool executions in a single agent cycle.
+Implemented centralized error handling for tool failures.
+Designed a modular architecture with separate layers for config, services, routes, registry, tools, and schemas.
