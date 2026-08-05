@@ -1,5 +1,5 @@
 import express from "express";
-import summarizerRoute from "./routes/summarizerRoute"
+import summarizerRoute from "./routes/summarizerRoute.js"
 
 const app = express();
 app.use(express.json());

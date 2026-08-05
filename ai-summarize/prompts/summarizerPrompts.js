@@ -1,5 +1,7 @@
 export const prompts = {
-    basicSummary: (text) => `Summarize the following text.Text:
+    basicSummary: (text) => `Summarize the following text.
+    
+    Text:
         """
         ${text}
         """`,

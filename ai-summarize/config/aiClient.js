@@ -1,12 +1,11 @@
-import openAI from "openai"
-import dotenv from "dotenv"
+import OpenAI from "openai";
+import dotenv from "dotenv";
+
 dotenv.config();
 
-const client = new openAI({
-    baseUrl:process.env.baseUrl,
-    apikey:"ollama"
-})
-
+const client = new OpenAI({
+    baseURL: process.env.OLLAMA_BASE_URL,
+    apiKey: "ollama"
+});
 
 export default client;
-
