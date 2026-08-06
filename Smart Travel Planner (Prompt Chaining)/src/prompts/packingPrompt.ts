@@ -1,3 +1,5 @@
+// src/prompts/packingPrompt.ts
+
 export function packingPrompt(
     itinerary: string
 ): string {
