@@ -1,0 +1,74 @@
+Interview Question #1
+
+Question:
+
+Q: Why is Native Function Calling preferred over prompt-based tool selection?
+
+Native Function Calling is preferred because the model has built-in support for tool invocation. Instead of describing tools in the prompt and manually parsing JSON, we provide structured tool definitions through the tools parameter. This makes the implementation more reliable, scalable, and less error-prone, while reducing prompt complexity and improving response consistency.
+
+
+Q: What is the purpose of the tools parameter in the OpenAI Responses API?
+
+The tools parameter is used to provide the AI model with structured definitions of the functions it can call. Each tool includes its name, description, and parameter schema, allowing the model to decide when a function should be invoked and what arguments to pass. This eliminates the need for prompt-based tool selection and makes tool execution more reliable and scalable.
+
+The tools parameter provides the AI model with the available function definitions. It enables the model to automatically decide when to invoke a function and generate the required arguments. This results in a more reliable and scalable tool-calling workflow.
+
+Whenever you're asked:
+
+"What is the purpose of X?"
+
+Use this structure:
+
+One-line definition
+Why it is used
+Benefit
+
+
+Q: Why do we define the parameter schema for a function instead of only providing the function name and description?
+
+The parameter schema defines the expected input structure for a function. It tells the AI what arguments are required, their data types, and any constraints. This helps the model generate valid function arguments consistently and reduces errors during function execution.
+
+
+**** A schema is a contract between the AI and your backend.
+
+
+What is the difference between a function description and a parameter schema in native function calling?
+
+The function description explains what the function does and when the AI should use it. The parameter schema defines the expected input structure, including argument names, data types, and required fields. Together, they help the model choose the correct function and generate valid arguments for it.
+
+
+Q: What information does the AI use to decide whether it should call a function?
+
+1 Tools contain Function name Description and parameter schema
+ 2The description is the most important part for deciding when to call the function. and The parameter schema tells the AI what arguments to generate and the expected structure of those arguments. 
+ 3 userquery that help the ai model what askedpreviously against the tools definition
+
+Q:If two tools have very similar descriptions, what problems can occur during function calling, and how would you avoid them?
+
+If tool descriptions are ambiguous or identical, the model may choose the wrong function.
+
+The AI may not be able to distinguish between the tools because both descriptions indicate the same purpose. As a result, it may invoke the wrong function or produce inconsistent tool selection.
+
+If two tools have very similar descriptions, the model may struggle to determine which function is more appropriate for the user's request. This can lead to incorrect tool selection or inconsistent behavior. To avoid this, each tool should have a clear, specific, and non-overlapping description that accurately defines its responsibility.
+
+
+Q: Why is it a good practice to separate the tool definition from the tool implementation?
+
+Separating the tool definition from the tool implementation follows the Separation of Concerns principle. The tool definition provides metadata to the AI model, such as the function name, description, and parameter schema, while the implementation contains the actual business logic. This separation improves maintainability, reusability, testing, and scalability because changes to the AI metadata do not affect the business logic, and vice versa.
+
+
+
+
+Why native function calling over prompt-based tool selection?
+Tool registry kyun?
+Schema validation kyun?
+AI-generated arguments ko untrusted input kyun maana?
+Tool descriptions kaise design karoge?
+Multiple tools scale kaise karenge?
+Error handling kaise karoge?
+Tool timeout/retry kaise handle karoge?
+Observability/logging kaise add karoge?
+Security implications kya hain?
+Model hallucination ko kaise control karoge?
+Parallel tool calls kaise handle karoge?
+Production mein tool authorization kaise karoge?
