@@ -1,0 +1,87 @@
+langchain
+langchain-community
+langchain-openai
+faiss-cpu
+pypdf
+python-dotenv
+fastapi
+uvicorn
+
+
+
+        ┌──────────────────────────── BASIC RAG ────────────────────────────┐    ┌────────────────────── PRODUCTION RAG ──────────────────────┐
+│                                                                   │    │                                                                 │
+│ User Query                                                        │    │ User / Client                                                   │
+│     │                                                             │    │      │                                                          │
+│     ▼                                                             │    │      ▼                                                          │
+│ Query Embedding                                                   │    │ API Gateway                                                    │
+│     │                                                             │    │ (Auth, Rate Limit, Logging)                                    │
+│     ▼                                                             │    │      │                                                          │
+│ Similarity Search                                                 │    │      ▼                                                          │
+│     │                                                             │    │ FastAPI RAG Backend                                            │
+│     ▼                                                             │    │      │                                                          │
+│ Retrieve Relevant Chunks                                          │    │      ├───────────────┬───────────────┬────────────────┐        │
+│     │                                                             │    │      ▼               ▼               ▼                │        │
+│     ▼                                                             │    │ Query Rewrite   Guardrails      Retriever            │        │
+│ Prompt + Context                                                  │    │                                      │                │        │
+│     │                                                             │    │                                      ▼                │        │
+│     ▼                                                             │    │                              Embedding Model          │        │
+│ LLM (GPT/Gemini/Llama)                                            │    │                                      │                │        │
+│     │                                                             │    │                                      ▼                │        │
+│     ▼                                                             │    │                                Vector Database        │        │
+│ Final Answer                                                      │    │                                      │                │        │
+│                                                                   │    │                                      ▼                │        │
+└───────────────────────────────────────────────────────────────────┘    │                             Relevant Chunks          │        │
+                                                                          │                                      │                │
+                                                                          │                                      ▼                │
+                                                                          │                               Reranker Model         │
+                                                                          │                                      │                │
+                                                                          │                                      ▼                │
+                                                                          │                               Context Builder        │
+                                                                          │                                      │                │
+                                                                          │                                      ▼                │
+                                                                          │                              LLM (GPT/Qwen/Llama)   │
+                                                                          │                                      │                │
+                                                                          │                                      ▼                │
+                                                                          │                                Final Response        │
+                                                                          └──────────────────────────────────────────────────────┘
+
+
+
+Basic RAG
+You
+ │
+ ▼
+Ask Librarian
+ │
+ ▼
+Librarian searches shelf
+ │
+ ▼
+Gets one or more books
+ │
+ ▼
+Explains answer
+
+
+Production RAG
+You
+ │
+ ▼
+Reception (API Gateway)
+ │
+ ▼
+Manager (FastAPI)
+ │
+ ├── Rewrites your question
+ ├── Checks security
+ ├── Sends librarian to search
+ ├── Reviews returned books
+ ├── Selects the best pages
+ ├── Organizes the information
+ │
+ ▼
+Expert (LLM)
+ │
+ ▼
+Final, accurate answer

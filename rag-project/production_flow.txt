@@ -1,0 +1,40 @@
+                         User / Client
+                              │
+                              ▼
+                         FastAPI API
+                    (Upload + Query API)
+                              │
+              ┌───────────────┴────────────────┐
+              │                                │
+              ▼                                ▼
+      Document Ingestion API              Query API
+              │                                │
+              ▼                                ▼
+       Document Processor              Query Processing
+              │                                │
+       ┌──────┼────────┐                       │
+       │      │        │                       │
+       ▼      ▼        ▼                       ▼
+    PDF    Chunking  Metadata            Query Rewrite
+   Loader             Add                     │
+       │                                      ▼
+       ▼                              Query Embedding
+ Embedding Model                            │
+       │                                     ▼
+       ▼                               Retriever
+  Vector Database                           │
+ (FAISS/Qdrant)                             ▼
+       │                              Relevant Chunks
+       │                                     │
+       └──────────────┐                      ▼
+                      ▼                 Reranker Model
+                Stored Vectors              │
+                                            ▼
+                                     Context Builder
+                                            │
+                                            ▼
+                                      Local LLM
+                                  (Ollama - Qwen/Llama)
+                                            │
+                                            ▼
+                                      Final Response
