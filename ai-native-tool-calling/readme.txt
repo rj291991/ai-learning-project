@@ -595,3 +595,8 @@ LLM → Final Response
 ```
 
 This separation creates a foundation for building more scalable AI agents and AI-powered backend systems.
+
+
+Why is a tool-calling loop necessary in an agentic LLM system instead of executing tools only once?
+
+A tool-calling loop is necessary because an LLM may require multiple rounds of tool execution to complete a task. The model can call one or more tools, receive their results, and then decide that another tool call is needed based on those results. The loop continues until the model produces a final response without requesting any more tools.

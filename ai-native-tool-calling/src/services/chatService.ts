@@ -31,70 +31,73 @@ Rules:
     console.log("AI Output:", response.output);
 
     // Step 2: Find function call
-    const functionCall = response.output.find(
+    const functionCalls = response.output.filter(
         (item) => item.type === "function_call"
     );
 
     // Step 3: No tool required
-    if (!functionCall) {
-        return response.output_text;
-    }
+    // if (!functionCall) {
+    //     return response.output_text;
+    // }
 
-    console.log("Function Name:", functionCall.name);
-    console.log("Raw Arguments:", functionCall.arguments);
+    // console.log("Function Name:", functionCall.name);
+    // console.log("Raw Arguments:", functionCall.arguments);
+    const toolOutputs = [];
 
-    // Step 4: Parse arguments
-    let args: unknown;
+    for (const functionCall of functionCalls) {
+        // Step 4: Parse arguments
+        let args: unknown;
 
-    try {
-        args = JSON.parse(functionCall.arguments);
-    } catch {
-        throw new Error("AI returned invalid function arguments.");
-    }
+        try {
+            args = JSON.parse(functionCall.arguments);
+        } catch {
+            throw new Error("AI returned invalid function arguments.");
+        }
 
-    console.log("Parsed Arguments:", args);
+        console.log("Parsed Arguments:", args);
 
-    // Step 5: Resolve tool from registry
-    const toolName = functionCall.name as keyof typeof toolRegistry;
+        // Step 5: Resolve tool from registry
+        const toolName = functionCall.name as keyof typeof toolRegistry;
 
-    let toolResult: string;
+        let toolResult: string;
 
-    try {
+        try {
 
-        const result = executeTool(toolName, args);
+            const result = executeTool(toolName, args);
 
-        console.log("Tool Result:", result);
+            console.log("Tool Result:", result);
 
-        toolResult = JSON.stringify({
-            success: true,
-            result
+            toolResult = JSON.stringify({
+                success: true,
+                result
+            });
+
+        } catch (error) {
+
+            console.error("Tool execution failed:", error);
+
+            toolResult = JSON.stringify({
+                success: false,
+                error: error instanceof Error
+                    ? error.message
+                    : "Tool execution failed"
+            });
+        }
+
+        console.log("Tool Output:", toolResult);
+        toolOutputs.push({
+            type: "function_call_output" as const,
+            call_id: functionCall.call_id,
+            output: toolResult
         });
-
-    } catch (error) {
-
-        console.error("Tool execution failed:", error);
-
-        toolResult = JSON.stringify({
-            success: false,
-            error: error instanceof Error
-                ? error.message
-                : "Tool execution failed"
-        });
     }
 
-    console.log("Tool Output:", toolResult);
-
+    console.log("Tool Outputs Sent To AI:", JSON.stringify(toolOutputs, null, 2));
     // Step 6: Send tool result back to the model
     const finalResponse = await client.responses.create({
         model: process.env.MODEL!,
         previous_response_id: response.id,
-        input: [
-            {
-                type: "function_call_output",
-                call_id: functionCall.call_id,
-                output: toolResult
-            }
-        ]
+        input: toolOutputs
     });
 
     // Step 7: Validate final response
