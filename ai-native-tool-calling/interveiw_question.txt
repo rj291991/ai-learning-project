@@ -56,7 +56,17 @@ Q: Why is it a good practice to separate the tool definition from the tool imple
 
 Separating the tool definition from the tool implementation follows the Separation of Concerns principle. The tool definition provides metadata to the AI model, such as the function name, description, and parameter schema, while the implementation contains the actual business logic. This separation improves maintainability, reusability, testing, and scalability because changes to the AI metadata do not affect the business logic, and vice versa.
 
+Why is a Tool Registry better than using a switch statement for executing LLM-selected tools?
 
+A Tool Registry provides a scalable and extensible way to map tool names to their implementations. Instead of maintaining a large switch statement that grows as new tools are added, the service can dynamically look up and execute a tool from the registry. This follows the Open/Closed Principle because we can add new tools without modifying the core tool-execution flow.
+
+SOLID: Open/Closed Principle (OCP)
+We should be able to add a new tool like weather without modifying the core chatService orchestration logic.
+
+
+
+Single Responsibility Principle (SRP)
+calculator.ts handles calculation, calculatorTool.ts defines the AI-facing contract, and toolRegistry.ts handles tool lookup/execution mapping.
 
 
 Why native function calling over prompt-based tool selection?
@@ -72,3 +82,16 @@ Security implications kya hain?
 Model hallucination ko kaise control karoge?
 Parallel tool calls kaise handle karoge?
 Production mein tool authorization kaise karoge?
+
+
+Why is the Open/Closed Principle relevant when designing an LLM tool registry?
+
+The Open/Closed Principle is relevant because the core tool orchestration logic should be closed for modification but open for extension. When we add a new tool, we should only need to implement the tool, define its schema, and register it in the tool registry without modifying the main chatService logic. This makes the architecture easier to maintain and scale as the number of tools grows.
+
+
+SOLID principle
+
+For example, in an e-commerce application, I would not put order calculation, database persistence, email notification, and invoice generation inside a single Order class. These are different responsibilities and can change for different reasons. So I separate them into OrderCalculator, OrderRepository, EmailService, and InvoiceGenerator. This way, each class has one clear responsibility and one primary reason to change. That is how I apply the Single Responsibility Principle.
+
+
+SRP is not about having one function per class; it is about having one cohesive responsibility and one primary reason for change.
