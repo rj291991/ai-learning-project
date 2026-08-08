@@ -1,0 +1,133 @@
+# Complete Development Journey (Step-by-Step)
+
+Step 1:
+Folder Structure Setup
+- Kya banaya
+- Kyu banaya
+
+Step 2:
+PDF Loader Implementation
+- File: app/ingestion/loader.py
+- Library used
+- Code ka purpose
+- Error:
+  longchain_community issue
+- Fix:
+  langchain_community
+
+Step 3:
+Chunking Implementation
+- File:
+  app/ingestion/chunker.py
+- RecursiveCharacterTextSplitter use kiya
+- chunk_size=500
+- chunk_overlap=50
+
+Step 4:
+Embedding Pipeline
+- File:
+  app/ingestion/embedder.py
+- nomic-embed-text use kiya
+- Ollama ke through embeddings generate kiye
+
+Step 5:
+FAISS Vector DB Creation
+- File:
+  app/ingestion/pipeline.py
+- PDF → chunks → embeddings → FAISS
+- Save:
+  vector_db/
+
+Issue:
+- 208 pages PDF par embedding failure
+- Ollama tokenize connection error
+
+Fix:
+- Smaller PDF se testing ki
+- Pipeline successfully run hui
+
+Step 6:
+Retriever
+- File:
+  app/retrieval/retriever.py
+- FAISS similarity search implement ki
+
+Step 7:
+Query Rewrite
+- File:
+  app/retrieval/query_rewriter.py
+
+Problem:
+Input:
+leave?
+
+Output:
+What does leave mean?
+
+Issue:
+Document related search nahi ho rahi thi
+
+Fix:
+Prompt improve kiya
+
+Final output:
+Employee leave policy related detailed query
+
+Step 8:
+Reranker
+- File:
+  app/retrieval/reranker.py
+
+Purpose:
+Retrieved 20 chunks ko rank karna
+
+Problem:
+Leave query par salary compliance aa raha tha
+
+Fix:
+- BGE reranker add kiya
+- bge-reranker-v2-m3 use kiya
+- threshold filtering add ki
+
+Result:
+Relevant leave chunks top par aaye
+
+Step 9:
+Context Builder
+- File:
+  app/llm/context_builder.py
+
+Purpose:
+Retrieved chunks ko LLM readable format me convert karna
+
+Step 10:
+Prompt Template
+- File:
+  app/prompts/template.py
+
+Purpose:
+LLM instructions create karna
+
+Rules:
+- Only context use karo
+- Outside knowledge nahi
+
+Step 11:
+Qwen3 Integration
+- File:
+  app/llm/model.py
+
+Model:
+qwen3
+
+Flow:
+Prompt → Ollama → Qwen3 → Answer
+
+Step 12:
+Testing
+Files:
+- test_loader.py
+- test_pipeline.py
+- test_reranker.py
+- test_context_builder.py
+- test_llm.py

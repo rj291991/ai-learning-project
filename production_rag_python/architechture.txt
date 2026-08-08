@@ -1,0 +1,36 @@
+                 User / Client
+                      |
+                      ▼
+                API Gateway
+                      |
+                      ▼
+              RAG Backend (FastAPI)
+                      |
+        ┌─────────────┼─────────────┐
+        │             │             │
+        ▼             ▼             ▼
+ Query Rewrite    Retriever     Guardrails
+      ✅              ✅
+        │             │
+        ▼             ▼
+ Query Embedding   Vector DB
+                      ✅
+                      |
+                      ▼
+              Relevant Chunks
+                      |
+                      ▼
+               Reranker Model
+                      ✅
+                      |
+                      ▼
+              Context Builder
+                      ⬅️ BAKI
+                      |
+                      ▼
+                    LLM
+                      ⬅️ BAKI
+                      |
+                      ▼
+                 Response API
+                      ⬅️ BAKI
